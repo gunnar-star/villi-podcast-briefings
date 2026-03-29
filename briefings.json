@@ -1,0 +1,25 @@
+{
+  "updated_at": "2026-03-29T00:08:54.632469+00:00",
+  "issues": [
+    {
+      "date": "2026-03-28",
+      "count": 15,
+      "path": "issues/2026-03-28.html"
+    },
+    {
+      "date": "2026-03-25",
+      "count": 13,
+      "path": "issues/2026-03-25.html"
+    },
+    {
+      "date": "2026-03-22",
+      "count": 15,
+      "path": "issues/2026-03-22.html"
+    },
+    {
+      "date": "2026-03-17",
+      "count": 1,
+      "path": "issues/2026-03-17.html"
+    }
+  ]
+}
