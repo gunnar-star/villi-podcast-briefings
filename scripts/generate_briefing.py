@@ -372,7 +372,7 @@ def main():
 
     # Fetch episodes
     print(f"\nFetching RSS feeds...")
-    episodes = fetch_recent_episodes(days_back=5)
+    episodes = fetch_recent_episodes(days_back=10)
     print(f"\nTotal episodes found: {len(episodes)}")
 
     if len(episodes) < 4:
