@@ -38,5 +38,6 @@ jobs:
             echo "No changes to commit (no new episodes or already published today)"
           else
             git commit -m "Villi briefing $(date -u +%Y-%m-%d)"
+            git pull --rebase origin main
             git push
           fi
