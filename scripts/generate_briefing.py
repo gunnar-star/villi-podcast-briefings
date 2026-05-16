@@ -184,6 +184,9 @@ def fetch_recent_episodes(days_back=3):
                     if isinstance(itunes_img, dict):
                         art = itunes_img.get("href")
 
+                # Get the direct episode link from RSS
+                ep_link = entry.get("link", "")
+
                 ep = {
                     "podcast": name,
                     "title": title,
@@ -194,6 +197,7 @@ def fetch_recent_episodes(days_back=3):
                     "art": art,
                     "code": feed_info["code"],
                     "score": score_episode(title, summary, feed_info["tags"]),
+                    "link": ep_link,
                 }
                 episodes.append(ep)
                 count += 1
@@ -269,7 +273,9 @@ def generate_html(episodes, date_str, all_issues):
         is_top = i < 3
         spotify = make_search_url("spotify", ep["podcast"], ep["title"])
         youtube = make_search_url("youtube", ep["podcast"], ep["title"])
-        transcript = make_search_url("google", ep["podcast"], ep["title"])
+        # Use direct episode link if available, fall back to Google search
+        ep_link = ep.get("link", "")
+        transcript = ep_link if ep_link else make_search_url("google", ep["podcast"], ep["title"])
 
         if ep["art"]:
             cover = f'<img src="{esc(ep["art"])}" alt="{esc(ep["podcast"])} artwork" loading="lazy">'
@@ -291,7 +297,7 @@ def generate_html(episodes, date_str, all_issues):
     <div class="actions">
       <a class="btn primary" href="{esc(spotify)}" target="_blank" rel="noopener">Spotify</a>
       <a class="btn subtle" href="{esc(youtube)}" target="_blank" rel="noopener">YouTube</a>
-      <a class="btn subtle" href="{esc(transcript)}" target="_blank" rel="noopener">Transcript</a>
+      <a class="btn subtle" href="{esc(transcript)}" target="_blank" rel="noopener">Episode Page</a>
     </div>
   </div>
 </article>'''
