@@ -398,8 +398,12 @@ def main():
     issue_path.write_text(issue_html, encoding="utf-8")
     print(f"Wrote {issue_path}")
 
-    # Write index.html (root copy with fixed CSS path)
+    # Write index.html (root copy with fixed CSS and archive paths)
     index_html = issue_html.replace('href="../assets/style.css"', 'href="assets/style.css"')
+    # Archive links need issues/ prefix when on root page
+    for iss in index_data["issues"]:
+        fname = iss["path"].split("/")[-1]
+        index_html = index_html.replace(f'href="{fname}"', f'href="issues/{fname}"')
     (Path(repo_dir) / "index.html").write_text(index_html, encoding="utf-8")
     print("Updated index.html")
 
