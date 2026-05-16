@@ -1,0 +1,42 @@
+name: Daily Podcast Briefing
+
+on:
+  schedule:
+    # Run every day at 07:00 UTC (7am GMT / ~7am Iceland time)
+    - cron: '0 7 * * *'
+  workflow_dispatch: # Allow manual triggers
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install feedparser
+
+      - name: Generate briefing
+        env:
+          GITHUB_WORKSPACE: ${{ github.workspace }}
+        run: python scripts/generate_briefing.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "Villi Bot"
+          git config user.email "gunnar@lgt.is"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit (no new episodes or already published today)"
+          else
+            git commit -m "Villi briefing $(date -u +%Y-%m-%d)"
+            git push
+          fi
